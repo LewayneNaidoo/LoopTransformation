@@ -14,6 +14,7 @@ public class textExtractor {
 		textExtractor t = new textExtractor();
 		t.parseString();
 		t.NumFor();
+	
 	}
 	
 	private void parseString()
