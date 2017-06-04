@@ -24,6 +24,22 @@ public class textExtractor {
 		return this.lines.get(lineNum);
 	}
 	
+	public String getIteratorName()
+	{
+		String line = this.lines.get(0);
+		String var = "";
+		for(int i = line.indexOf("int") + 4;i < line.length();i++)
+		{
+			if(line.charAt(i) == ' ')
+			{
+				break;
+			}
+			
+			var += line.charAt(i);
+		}
+		return var;
+	}
+	
 	public String removeSpace(String line)
 	{
 		return line.replaceAll("\\s+","");

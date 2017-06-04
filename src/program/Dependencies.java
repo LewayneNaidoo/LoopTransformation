@@ -60,7 +60,7 @@ public class Dependencies {
 						name += current;
 						j++;
 					}
-					j += 2;
+					j += 1 + t.getIteratorName().length();
 					while(j < line.length() && (current = line.charAt(j)) != ']')
 					{
 						offsetS += current;
@@ -99,23 +99,35 @@ public class Dependencies {
 					{
 						for(Variable vw: p2.getSecond())
 						{
-							if(vr.getOffSet() != 0 || vw.getOffSet() != 0)
-							{
 								if(vr.getOffSet() != vw.getOffSet())
 								{
 									if(vr.getLineNum() == vw.getLineNum())
 									{
-										unMovableLines.add(vr.getLineNum());
+										addUnmovable(unMovableLines, vr.getLineNum());
+									}
+								}
+								else
+								{
+									if(vw.getLineNum() < vr.getLineNum())
+									{
+										addUnmovable(unMovableLines, vw.getLineNum());
 									}
 								}
 							}
-						}
 					}
 				}
 			}
 		}
 		System.out.println(unMovableLines.get(0));
 		System.out.println(unMovableLines.size());
+	}
+	
+	private void addUnmovable(ArrayList<Integer> unMovableLines, int lineNum)
+	{
+		if(!unMovableLines.contains(lineNum))
+		{
+			unMovableLines.add(lineNum);
+		}
 	}
 	
 	private void addToVr(String name, Variable v)
