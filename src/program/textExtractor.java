@@ -15,6 +15,7 @@ public class textExtractor {
 		textExtractor t = new textExtractor();
 		t.parseString();
 		Dependencies d = new Dependencies(t);
+		d.perform();
 	}
 	
 	public String getLine(int lineNum)
@@ -40,7 +41,7 @@ public class textExtractor {
 	private void parseString()
 	{
 		String line;
-		String fileName = "loop.txt";
+		String fileName = "loop2.txt";
 		
 		try {
 	        FileReader fileReader = 
