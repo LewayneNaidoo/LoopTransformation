@@ -15,26 +15,45 @@ public class Dependencies {
 		this.t = t;
 	}
 	
+	private int countBrackets(String line)
+	{
+		int count = 0;
+		for (char c : line.toCharArray())
+		{
+		  if(c == '[')
+		  {
+			  count++;
+		  }
+		}
+		return count;
+	}
+	
 	public void perform()
 	{
 		Variable v;
 		String line;
+		boolean mark;
 		for(int i = t.getFirst(); i < t.getSize() - 1; i++)
 		{
+			mark = false;
 			line = t.removeSpace(t.getLine(i));
 			char current;
 			for (int j = 0; j < line.length(); j++)
 			{
+				if(line.charAt(j) == '=' && !mark)
+				{
+					mark = true;
+				}
 				String name = "";
 				String offsetS = "";
 				int offset = 0;
-				while((current = line.charAt(j)) != '[')
+				while(j < line.length() && (current = line.charAt(j)) != '[')
 				{
 					name += current;
 					j++;
 				}
 				j += 2;
-				while((current = line.charAt(j)) != ']')
+				while(j < line.length() && (current = line.charAt(j)) != ']')
 				{
 					offsetS += current;
 					j++;
@@ -45,7 +64,14 @@ public class Dependencies {
 				}
 				System.out.println("name: " + name + " offset: " + offset + " line: " + i);
 				v = new Variable(name, offset, i);
-				vwInner.add(v);
+				if(mark)
+				{
+					vrInner.add(v);
+				}
+				else
+				{
+					vwInner.add(v);
+				}
 				j++;
 			}
 		}
