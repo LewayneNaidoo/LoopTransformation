@@ -27,8 +27,7 @@ public class Fission {
         FileWriter fw;
 		try {
 			fw = new FileWriter("outfile.txt");
-			
-			if(!unMovableLines.isEmpty())
+			if(!(t.getLast() - t.getFirst() == unMovableLines.size()))
 			{
 				fw.append(t.getLine(0) + System.getProperty("line.separator"));
 				if(!t.getLine(0).contains("{"))
@@ -43,7 +42,7 @@ public class Fission {
 				}
 				if(!t.getLine(0).contains("}"))
 				{
-					fw.append('}');
+					fw.append('}' + System.getProperty("line.separator"));
 				}
 				
 				fw.append(System.getProperty("line.separator"));

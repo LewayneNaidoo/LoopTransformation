@@ -103,6 +103,7 @@ public class Dependencies {
 								{
 									if(vr.getLineNum() == vw.getLineNum())
 									{
+										System.out.println(p2.getFirst() + vw.getLineNum() + " and " + p.getFirst() + vr.getLineNum());
 										addUnmovable(unMovableLines, vr.getLineNum());
 									}
 								}
@@ -110,7 +111,9 @@ public class Dependencies {
 								{
 									if(vw.getLineNum() < vr.getLineNum())
 									{
+										System.out.println(p2.getFirst() + vw.getLineNum() + " and " + p.getFirst() + vr.getLineNum());
 										addUnmovable(unMovableLines, vw.getLineNum());
+										addUnmovable(unMovableLines, vr.getLineNum());
 									}
 								}
 							}
@@ -118,8 +121,8 @@ public class Dependencies {
 				}
 			}
 		}
-		System.out.println(unMovableLines.get(0));
-		System.out.println(unMovableLines.size());
+		//System.out.println(unMovableLines.get(0));
+		//System.out.println(unMovableLines.size());
 	}
 	
 	private void addUnmovable(ArrayList<Integer> unMovableLines, int lineNum)
