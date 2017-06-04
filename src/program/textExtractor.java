@@ -9,12 +9,32 @@ import java.util.ArrayList;
 
 public class textExtractor {
 	private ArrayList<String> lines = new ArrayList<String>();
-	private int numFor = 0;
+	private int firstInner;
+	private int numFor;
 	public static void main(String [] args) {
 		textExtractor t = new textExtractor();
 		t.parseString();
-		t.NumFor();
+		Dependencies d = new Dependencies(t);
+	}
 	
+	public String getLine(int lineNum)
+	{
+		return this.lines.get(lineNum);
+	}
+	
+	public String removeSpace(String line)
+	{
+		return line.replaceAll("\\s+","");
+	}
+	
+	public int getFirst()
+	{
+		return firstInner;
+	}
+	
+	public int getSize()
+	{
+		return this.lines.size();
 	}
 	
 	private void parseString()
@@ -30,6 +50,10 @@ public class textExtractor {
 	        FileWriter fw = new FileWriter("outfile.txt"); 
 	        
 	        while( (line = br.readLine()) != null) {
+	        	if(line.contains("{"))
+	        	{
+	        		firstInner = lines.size() + 1;
+	        	}
 	            lines.add(line);
 	        }
 	        
