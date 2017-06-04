@@ -5,10 +5,8 @@ import java.util.ArrayList;
 public class Dependencies {
 
 	private textExtractor t;
-	private ArrayList<ArrayList<Variable>> vwOuter = new ArrayList<ArrayList<Variable>>();
-	ArrayList<Variable> vwInner = new ArrayList<Variable>();
-	private ArrayList<ArrayList<Variable>> vrOuter = new ArrayList<ArrayList<Variable>>();
-	ArrayList<Variable> vrInner = new ArrayList<Variable>();
+	private ArrayList<Pair> listR = new ArrayList<Pair>();
+	private ArrayList<Pair> listW = new ArrayList<Pair>();
 	
 	Dependencies(textExtractor t)
 	{
@@ -28,55 +26,126 @@ public class Dependencies {
 		return count;
 	}
 	
-	public void perform()
+	public void sortIntoList()
 	{
 		Variable v;
 		String line;
-		boolean mark;
+		boolean read;
+		int bracketCount;
 		for(int i = t.getFirst(); i < t.getSize() - 1; i++)
 		{
-			mark = false;
+			read = false;
 			line = t.removeSpace(t.getLine(i));
+			bracketCount = countBrackets(line);
 			char current;
 			for (int j = 0; j < line.length(); j++)
 			{
-				if(line.charAt(j) == '=' && !mark)
+				if(bracketCount != 0)
 				{
-					mark = true;
+					if(line.charAt(j) == '=' && !read)
+					{
+						read = true;
+						j++;
+					}
+					else if(line.charAt(j) == '+' || line.charAt(j) == '-')
+					{
+						j++;
+					}
+
+					String name = "";
+					String offsetS = "";
+					int offset = 0;
+					while((current = line.charAt(j)) != '[')
+					{
+						name += current;
+						j++;
+					}
+					j += 2;
+					while(j < line.length() && (current = line.charAt(j)) != ']')
+					{
+						offsetS += current;
+						j++;
+					}
+					if(offsetS != "")
+					{
+						offset = Integer.parseInt(offsetS);
+					}
+					v = new Variable(offset, i);
+					if(read)
+					{
+						addToVr(name, v);
+						System.out.println("READ name: " + name + " offset: " + offset + " line: " + i);
+					}
+					else
+					{
+						addToVw(name, v);
+						System.out.println("WRITE name: " + name + " offset: " + offset + " line: " + i);
+					}
+					bracketCount--;
 				}
-				String name = "";
-				String offsetS = "";
-				int offset = 0;
-				while(j < line.length() && (current = line.charAt(j)) != '[')
-				{
-					name += current;
-					j++;
-				}
-				j += 2;
-				while(j < line.length() && (current = line.charAt(j)) != ']')
-				{
-					offsetS += current;
-					j++;
-				}
-				if(offsetS != "")
-				{
-					offset = Integer.parseInt(offsetS);
-				}
-				System.out.println("name: " + name + " offset: " + offset + " line: " + i);
-				v = new Variable(name, offset, i);
-				if(mark)
-				{
-					vrInner.add(v);
-				}
-				else
-				{
-					vwInner.add(v);
-				}
-				j++;
 			}
 		}
-		vwOuter.add(vwInner);
-		vrOuter.add(vrInner);
+	}
+	
+	public void dependencyAnalysis(ArrayList<Integer> unMovableLines)
+	{
+		for (Pair p: listR)
+		{
+			for(Pair p2: listW)
+			{
+				if(p.getFirst().equals(p2.getFirst()))
+				{
+					for(Variable vr: p.getSecond())
+					{
+						for(Variable vw: p2.getSecond())
+						{
+							if(vr.getOffSet() != 0 || vw.getOffSet() != 0)
+							{
+								if(vr.getOffSet() != vw.getOffSet())
+								{
+									if(vr.getLineNum() == vw.getLineNum())
+									{
+										unMovableLines.add(vr.getLineNum());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		System.out.println(unMovableLines.get(0));
+		System.out.println(unMovableLines.size());
+	}
+	
+	private void addToVr(String name, Variable v)
+	{
+		for (Pair p: listR)
+		{
+			if(p.getFirst().equals(name))
+			{
+				p.getSecond().add(v);
+				return;
+			}
+		}
+		Pair p1 = new Pair(name, new ArrayList<Variable>());
+		p1.getSecond().add(v);
+		listR.add(p1);
+	}
+	
+	private void addToVw(String name, Variable v)
+	{
+		for (Pair p: listW)
+		{
+			if(p.getFirst().equals(name))
+			{
+				p.getSecond().add(v);
+				return;
+			}
+		}
+		Pair p1 = new Pair(name, new ArrayList<Variable>());
+		p1.getSecond().add(v);
+		listW.add(p1);
 	}
 	
 }

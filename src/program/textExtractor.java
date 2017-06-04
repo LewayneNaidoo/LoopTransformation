@@ -10,12 +10,13 @@ import java.util.ArrayList;
 public class textExtractor {
 	private ArrayList<String> lines = new ArrayList<String>();
 	private int firstInner;
+	private int lastInner;
 	private int numFor;
 	public static void main(String [] args) {
 		textExtractor t = new textExtractor();
 		t.parseString();
-		Dependencies d = new Dependencies(t);
-		d.perform();
+		Fission f = new Fission(t);
+		f.run();
 	}
 	
 	public String getLine(int lineNum)
@@ -33,6 +34,11 @@ public class textExtractor {
 		return firstInner;
 	}
 	
+	public int getLast()
+	{
+		return lastInner;
+	}
+	
 	public int getSize()
 	{
 		return this.lines.size();
@@ -48,18 +54,20 @@ public class textExtractor {
 	            new FileReader(fileName);
 	
 	        BufferedReader br = new BufferedReader(fileReader);
-	        FileWriter fw = new FileWriter("outfile.txt"); 
 	        
 	        while( (line = br.readLine()) != null) {
 	        	if(line.contains("{"))
 	        	{
 	        		firstInner = lines.size() + 1;
 	        	}
+	        	else if(line.contains("}"))
+	        	{
+	        		lastInner = lines.size();
+	        	}
 	            lines.add(line);
 	        }
 	        
 	        br.close();         
-	        fw.close();
 	    }
 	    catch(FileNotFoundException ex) 
 	    {
