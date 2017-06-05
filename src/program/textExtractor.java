@@ -11,26 +11,11 @@ public class textExtractor {
 	private int firstInner;
 	private int lastInner;
 	private int numFor;
-	public static void main(String [] args) {
-		textExtractor t = new textExtractor();
-		t.parseString();
-		t.numFor();
-		if(t.getNumFor() == 2)
-		{
-			Interchange in = new Interchange(t);
-			if (in.legal()) {
-				System.out.println("Legal for interchange");
-				in.run();
-			} else {
-				System.out.println("Illegal for interchange");
-				// skewing
-			}
-		}
-		else
-		{
-			Fission f = new Fission(t);
-			f.run();	
-		}
+	private String fileName;
+	
+	textExtractor(String fileName)
+	{
+		this.fileName = fileName;
 	}
 	
 	public String getLine(int lineNum)
@@ -108,11 +93,10 @@ public class textExtractor {
 		return this.lines.size();
 	}
 	
-	private void parseString()
+	public void parseString()
 	{
 		String line, lineNS;
-		int brack, count, length, newLength;
-		String fileName = "loop2.txt";
+		int brack, count, length;
 		
 		try {
 	        FileReader fileReader = 
@@ -134,7 +118,7 @@ public class textExtractor {
         				length = line.length();
         				line = line.replace("{", "");
         				count = length - line.length();
-        				System.out.println(count);
+        				//System.out.println(count);
 	        			if(brack + 1 >= lineNS.length())
 	        			{
 	        				if(count == 2)
@@ -161,7 +145,7 @@ public class textExtractor {
 	        			lines.add(line);
 	        			firstInner = lines.size();
 	        		}
-        			System.out.println("F" + firstInner);
+        			//System.out.println("F" + firstInner);
 	        	}
 	        	else if((brack = lineNS.indexOf("}")) != -1)
 	        	{
@@ -196,14 +180,14 @@ public class textExtractor {
 	        			lines.add(line);
 	        			lastInner = lines.size() - 1;
 	        		}
-        			System.out.println("L" + lastInner);
+        			//System.out.println("L" + lastInner);
 	        	}
 	        	else
 	        	{
 	        		lines.add(line);
 	        	}
 	        }
-	        print();
+	        //print();
 	        
 	        br.close();         
 	    }
@@ -220,7 +204,7 @@ public class textExtractor {
 	            + fileName + "'");                  
 	    }
 	}
-	private void numFor()
+	public void numFor()
 	{
 		for (String line: lines)
 		{
@@ -234,6 +218,16 @@ public class textExtractor {
 	public int getNumFor()
 	{
 		return numFor;
+	}
+	
+	public String getLines()
+	{
+		String allLines = "";
+		for(String line: lines)
+		{
+			allLines += line + System.getProperty("line.separator");
+		}
+		return allLines;
 	}
 	
 	public void print()

@@ -113,7 +113,7 @@ public class Dependencies {
 									if(vw.getLineNum() < vr.getLineNum())
 									{
 										//if(vr.getLineNum() > )
-										addIfNotExist(movableLines, vw.getLineNum());
+										//addIfNotExist(movableLines, vw.getLineNum());
 										System.out.println(p2.getFirst() + vw.getLineNum() + " and " + p.getFirst() + vr.getLineNum());
 											addIfNotExist(unMovableLines, vw.getLineNum());
 											addIfNotExist(unMovableLines, vr.getLineNum());

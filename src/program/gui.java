@@ -1,4 +1,4 @@
-package loopGUI;
+package program;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class gui extends JFrame {
-	
 	private static final String FILENAME = "input.txt";
 
 	public static void addComponentsToPane(Container pane) {
@@ -103,15 +102,42 @@ public class gui extends JFrame {
 			}
 
 		}
-		
-    	b.setText(inputLoop);
+    	b.setText(transform());
     }
     
+    public static String transform()
+    {
+    	String output = "";
+		textExtractor t = new textExtractor(FILENAME);
+		t.parseString();
+		t.numFor();
+		if(t.getNumFor() == 2)
+		{
+			Interchange in = new Interchange(t);
+			if (in.legal()) {
+				System.out.println("Legal for interchange");
+				in.run();
+				output = t.getLines();
+			} else {
+				System.out.println("Illegal for interchange");
+				Skewing sk = new Skewing(t);
+				sk.run();
+				output = sk.getOutput();
+			}
+		}
+		else
+		{
+			Fission f = new Fission(t);
+			f.run();	
+			output = f.getOutput();
+		}
+		return output;
+    }
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 GUI();
             }
         });
-    }
+	}
 }

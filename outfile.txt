@@ -1,11 +1,1 @@
-for(i = 1; i < 3; i++)
-{
-	B[i] = 25;
-	D[i] = B[i];
-}
-
-for(i = 1; i < 3; i++)
-{
-	A[i] = A[i] + 1;
-	C[i] = B[i - 1] + 22;
-}
+the loop can not be fissioned

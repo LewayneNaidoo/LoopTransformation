@@ -131,10 +131,6 @@ public class Interchange {
 			
 			temp1 = t.getLine(looptwo);
 			temp1 = temp1.trim();
-		/*	if (temp1.startsWith("{")) {
-				temp1 = temp1.replace("{", "");
-				temp1 = temp1 + "{";
-			}*/
 			
 			temp2 = t.getLine(loopone);
 			temp2 = "\t" + temp2;
