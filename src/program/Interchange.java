@@ -30,18 +30,17 @@ public class Interchange {
 			for(int k = 0; k < t.getSize(); k++)
 			{
 				line = t.getLine(k);
+				line = line.replaceAll("\\s", "");
 				
+				if (line.contains("{")) {
+					count++;
+				}
 				
-				if (count >= 2 ) {
-					if (line.contains("}")) {
-						break;
-					}
-					
+				if (count >= 2 && line.length() > 1) {							
 					ileft = 0;
 					jleft = 0;
 					
-					line = line.replaceAll("\\s", "");
-					
+					line= line.replace("{", "");				
 					right = line.split("=");
 					left = right[0];
 					right = right[1].split("]");
@@ -94,9 +93,8 @@ public class Interchange {
 						}
 					}							
 				}
-				
-				if (line.contains("{")) {
-					count++;
+				if (line.contains("}")) {
+					break;
 				}
 			}
 			return true;
