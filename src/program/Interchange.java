@@ -20,21 +20,18 @@ public class Interchange {
 			String line;
 			String left;
 			String[] right;
-			String lefti;
-			String leftj;
-			String righti;
-			String rightj;
+			String lefti, leftj;		
+			String righti, rightj;
 			String n1, n2;
-			int ileft;
-			int jleft;
-			int iright;
-			int jright;
-			int idep;
-			int jdep;		
+			int ileft, jleft;		
+			int iright, jright;
+			int idep, jdep;		
 			
 			for(int k = 0; k < t.getSize(); k++)
 			{
 				line = t.getLine(k);
+				
+				
 				if (count >= 2 ) {
 					if (line.contains("}")) {
 						break;
