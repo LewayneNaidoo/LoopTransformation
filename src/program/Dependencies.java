@@ -60,7 +60,7 @@ public class Dependencies {
 						name += current;
 						j++;
 					}
-					j += 1 + t.getIteratorName().length();
+					j += 1 + t.getIteratorName(1).length();
 					while(j < line.length() && (current = line.charAt(j)) != ']')
 					{
 						offsetS += current;
@@ -89,6 +89,7 @@ public class Dependencies {
 	
 	public void dependencyAnalysis(ArrayList<Integer> unMovableLines)
 	{
+		ArrayList<Integer> movableLines = new ArrayList<Integer>();
 		for (Pair p: listR)
 		{
 			for(Pair p2: listW)
@@ -104,16 +105,18 @@ public class Dependencies {
 									if(vr.getLineNum() == vw.getLineNum())
 									{
 										System.out.println(p2.getFirst() + vw.getLineNum() + " and " + p.getFirst() + vr.getLineNum());
-										addUnmovable(unMovableLines, vr.getLineNum());
+										addIfNotExist(unMovableLines, vr.getLineNum());
 									}
 								}
 								else
 								{
 									if(vw.getLineNum() < vr.getLineNum())
 									{
+										//if(vr.getLineNum() > )
+										addIfNotExist(movableLines, vw.getLineNum());
 										System.out.println(p2.getFirst() + vw.getLineNum() + " and " + p.getFirst() + vr.getLineNum());
-										addUnmovable(unMovableLines, vw.getLineNum());
-										addUnmovable(unMovableLines, vr.getLineNum());
+											addIfNotExist(unMovableLines, vw.getLineNum());
+											addIfNotExist(unMovableLines, vr.getLineNum());
 									}
 								}
 							}
@@ -125,11 +128,11 @@ public class Dependencies {
 		//System.out.println(unMovableLines.size());
 	}
 	
-	private void addUnmovable(ArrayList<Integer> unMovableLines, int lineNum)
+	private void addIfNotExist(ArrayList<Integer> List, int lineNum)
 	{
-		if(!unMovableLines.contains(lineNum))
+		if(!List.contains(lineNum))
 		{
-			unMovableLines.add(lineNum);
+			List.add(lineNum);
 		}
 	}
 	

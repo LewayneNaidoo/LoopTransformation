@@ -1,10 +1,11 @@
-for(int i = 1; i < 3; i++)
+for(i = 1; i < 3; i++)
 {
-	X[i] = X[i] + 1
-	Y[i + 1] = Y[i] + X[i]
+	B[i] = 25;
+	D[i] = B[i];
 }
 
-for(int i = 1; i < 3; i++)
+for(i = 1; i < 3; i++)
 {
-	Z[i] = Y[i] + 1
+	A[i] = A[i] + 1;
+	C[i] = B[i - 1] + 22;
 }

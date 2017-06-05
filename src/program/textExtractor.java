@@ -14,8 +14,23 @@ public class textExtractor {
 	public static void main(String [] args) {
 		textExtractor t = new textExtractor();
 		t.parseString();
-		Fission f = new Fission(t);
-		f.run();
+		t.numFor();
+		if(t.getNumFor() == 2)
+		{
+			Interchange in = new Interchange(t);
+			if (in.legal()) {
+				System.out.println("Legal for interchange");
+				in.run();
+			} else {
+				System.out.println("Illegal for interchange");
+				// skewing
+			}
+		}
+		else
+		{
+			Fission f = new Fission(t);
+			f.run();	
+		}
 	}
 	
 	public String getLine(int lineNum)
@@ -23,17 +38,51 @@ public class textExtractor {
 		return this.lines.get(lineNum);
 	}
 	
-	public String getIteratorName()
+	public void removeLine(int lineNum)
 	{
-		String line = this.lines.get(0);
-		String var = "";
-		for(int i = line.indexOf("int") + 4;i < line.length();i++)
+		this.lines.remove(lineNum);
+	}
+	
+	public void addLine(int lineNum, String line)
+	{
+		this.lines.add(lineNum, line);
+	}
+	
+	public int getForLine(int forNum)
+	{
+		for(int i = 0; i < lines.size(); i++)
 		{
-			if(line.charAt(i) == ' ')
+			if(lines.get(i).contains("for"))
+			{
+				if(forNum == 1)
+				{
+					return i;
+				}
+				forNum--;
+			}
+		}
+		return -1;
+	}
+	
+	public String getIteratorName(int forNum)
+	{
+		String line = removeSpace(this.lines.get(getForLine(forNum)));
+		String var = "";
+		int index;
+		if(line.contains("int"))
+		{
+			index = line.indexOf("int") + 3;
+		}
+		else
+		{
+			index = 4;
+		}
+		for(int i = index;i < line.length();i++)
+		{
+			if(line.charAt(i) == '=')
 			{
 				break;
 			}
-			
 			var += line.charAt(i);
 		}
 		return var;
@@ -61,7 +110,8 @@ public class textExtractor {
 	
 	private void parseString()
 	{
-		String line;
+		String line, lineNS;
+		int brack, count, length, newLength;
 		String fileName = "loop2.txt";
 		
 		try {
@@ -71,16 +121,89 @@ public class textExtractor {
 	        BufferedReader br = new BufferedReader(fileReader);
 	        
 	        while( (line = br.readLine()) != null) {
-	        	if(line.contains("{"))
+	        	lineNS = removeSpace(line);
+	        	if(lineNS.length() == 0)
+    			{
+	        		continue;
+    			}
+	        	
+	        	if((brack = lineNS.indexOf("{")) != -1)
 	        	{
-	        		firstInner = lines.size() + 1;
+	        		if(lineNS.length() != 1)
+	        		{
+        				length = line.length();
+        				line = line.replace("{", "");
+        				count = length - line.length();
+        				System.out.println(count);
+	        			if(brack + 1 >= lineNS.length())
+	        			{
+	        				if(count == 2)
+	        				{
+	        					lines.add("{");
+	        				}
+		        			lines.add(line);
+			        		lines.add("{");
+			        		firstInner = lines.size();
+	        			}
+	        			else
+	        			{
+			        		lines.add("{");
+		        			lines.add("\t" + line);
+	        				if(count == 2)
+	        				{
+	        					lines.add("{");
+	        				}
+	            			firstInner = lines.size() - 1;
+	        			}
+	        		}
+	        		else
+	        		{
+	        			lines.add(line);
+	        			firstInner = lines.size();
+	        		}
+        			System.out.println("F" + firstInner);
 	        	}
-	        	else if(line.contains("}"))
+	        	else if((brack = lineNS.indexOf("}")) != -1)
 	        	{
-	        		lastInner = lines.size();
+	        		if(lineNS.length() != 1)
+	        		{
+        				length = line.length();
+        				line = line.replace("}", "");
+        				count = length - line.length();
+	        			if(brack + 1 >= lineNS.length())
+	        			{
+	        				if(count == 2)
+	        				{
+	        					lines.add("}");
+	        				}
+		        			lines.add(line);
+			        		lines.add("}");
+			        		lastInner = lines.size();
+	        			}
+	        			else
+	        			{
+			        		lines.add("}");
+		        			lines.add("\t" + line);
+	        				if(count == 2)
+	        				{
+	        					lines.add("}");
+	        				}
+	        				lastInner = lines.size() - 1;
+	        			}
+	        		}
+	        		else
+	        		{
+	        			lines.add(line);
+	        			lastInner = lines.size() - 1;
+	        		}
+        			System.out.println("L" + lastInner);
 	        	}
-	            lines.add(line);
+	        	else
+	        	{
+	        		lines.add(line);
+	        	}
 	        }
+	        print();
 	        
 	        br.close();         
 	    }
@@ -97,7 +220,7 @@ public class textExtractor {
 	            + fileName + "'");                  
 	    }
 	}
-	private void NumFor()
+	private void numFor()
 	{
 		for (String line: lines)
 		{
@@ -111,6 +234,14 @@ public class textExtractor {
 	public int getNumFor()
 	{
 		return numFor;
+	}
+	
+	public void print()
+	{
+		for(String line: lines)
+		{
+			System.out.println(line);
+		}
 	}
 	
 }
