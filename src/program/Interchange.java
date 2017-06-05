@@ -40,7 +40,7 @@ public class Interchange {
 					ileft = 0;
 					jleft = 0;
 					
-					line= line.replace("{", "");				
+					line = line.replace("{", "");				
 					right = line.split("=");
 					left = right[0];
 					right = right[1].split("]");
@@ -68,7 +68,6 @@ public class Interchange {
 							break;
 						}
 						
-	
 						if (right[i].contains(name)) {
 					
 							if (right[i].contains(n1 + "+") || right[i].contains(n1 + "-")) {
