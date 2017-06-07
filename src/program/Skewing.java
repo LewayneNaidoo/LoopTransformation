@@ -66,12 +66,9 @@ public class Skewing {
 					io = line[i].substring(line[i].indexOf("=")+1, line[i].indexOf(";"));
 					n = line[i].substring(line[i].indexOf("<")+2, line[i].lastIndexOf(";"));
 					f = true;
-					System.out.println(io);
-					System.out.println(n);
 				} else {
 					looptwo = countline;
 					m = line[i].substring(line[i].indexOf("<")+4, line[i].lastIndexOf(";"));
-					System.out.println(m);
 				}
 			}
 			countline++;
@@ -80,7 +77,7 @@ public class Skewing {
 		temp1 = line[looptwo];
 		temp1 = temp1.trim();
 		temp1 = temp1.replaceFirst("i", io);
-		temp1 = temp1.replaceFirst("i", m);
+		temp1 = temp1.replaceFirst("i", n);
 		
 		temp2 = line[loopone];
 		temp2 = "\t" + temp2;
