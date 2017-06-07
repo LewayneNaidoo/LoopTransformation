@@ -1,7 +1,6 @@
 package program;
 
 import java.util.ArrayList;
-
 public class Pair {
 	private String name;
 	private ArrayList<Variable> vInner;

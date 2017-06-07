@@ -1,12 +1,12 @@
 package program;
 
 import java.util.ArrayList;
-
 public class Fission {
 	
 	private ArrayList<Integer> unMovableLines;
 	private textExtractor t;
 	private String output = "";
+	
 	Fission(textExtractor t)
 	{
 		this.unMovableLines = new ArrayList<Integer>();

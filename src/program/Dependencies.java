@@ -1,7 +1,6 @@
 package program;
 
 import java.util.ArrayList;
-
 public class Dependencies {
 
 	private textExtractor t;
