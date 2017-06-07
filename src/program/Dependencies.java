@@ -53,13 +53,27 @@ public class Dependencies {
 
 					String name = "";
 					String offsetS = "";
+					String multS = "";
 					int offset = 0;
+					int mult = 1;
 					while((current = line.charAt(j)) != '[')
 					{
 						name += current;
 						j++;
 					}
-					j += 1 + t.getIteratorName(1).length();
+					j++;
+					
+					while((current = line.charAt(j)) != t.getIteratorName(1).charAt(0))
+					{
+						if(current == '*')
+						{
+							j++;
+							continue;
+						}
+						multS += current;
+						j++;
+					}
+					j += t.getIteratorName(1).length();
 					while(j < line.length() && (current = line.charAt(j)) != ']')
 					{
 						offsetS += current;
@@ -69,16 +83,20 @@ public class Dependencies {
 					{
 						offset = Integer.parseInt(offsetS);
 					}
-					v = new Variable(offset, i);
+					if(multS != "")
+					{
+						mult = Integer.parseInt(multS);
+					}
+					v = new Variable(mult, offset, i);
 					if(read)
 					{
 						addToVr(name, v);
-						System.out.println("READ name: " + name + " offset: " + offset + " line: " + i);
+						System.out.println("READ name: " + name + " mult:" + mult + " offset: " + offset + " line: " + i);
 					}
 					else
 					{
 						addToVw(name, v);
-						System.out.println("WRITE name: " + name + " offset: " + offset + " line: " + i);
+						System.out.println("WRITE name: " + name + " mult:" + mult + " offset: " + offset + " line: " + i);
 					}
 					bracketCount--;
 				}
@@ -88,43 +106,43 @@ public class Dependencies {
 	
 	public void dependencyAnalysis(ArrayList<Integer> unMovableLines)
 	{
-		ArrayList<Integer> movableLines = new ArrayList<Integer>();
+		Gcd g = new Gcd();
+		ArrayList<Integer> w = new ArrayList<Integer>();
+		ArrayList<Integer> r = new ArrayList<Integer>();
 		for (Pair p: listR)
 		{
 			for(Pair p2: listW)
 			{
 				if(p.getFirst().equals(p2.getFirst()))
 				{
-					for(Variable vr: p.getSecond())
+					for(Variable vw: p2.getSecond())
 					{
-						for(Variable vw: p2.getSecond())
+						for(Variable vr: p.getSecond())
 						{
-								if(vr.getOffSet() != vw.getOffSet())
+							if(g.gcdTest(vw.getMult(), vw.getOffSet(), vr.getMult(), vr.getOffSet()))
+							{
+								addIfNotExist(unMovableLines, vw.getLineNum());
+							}
+							else
+							{
+								if(vw.getLineNum() < vr.getLineNum())
 								{
-									if(vr.getLineNum() == vw.getLineNum())
+									if(r.contains(vw.getLineNum()))
 									{
-										System.out.println(p2.getFirst() + vw.getLineNum() + " and " + p.getFirst() + vr.getLineNum());
-										addIfNotExist(unMovableLines, vr.getLineNum());
+										addIfNotExist(unMovableLines, vw.getLineNum());
 									}
-								}
-								else
-								{
-									if(vw.getLineNum() < vr.getLineNum())
+									else
 									{
-										//if(vr.getLineNum() > )
-										//addIfNotExist(movableLines, vw.getLineNum());
-										System.out.println(p2.getFirst() + vw.getLineNum() + " and " + p.getFirst() + vr.getLineNum());
-											addIfNotExist(unMovableLines, vw.getLineNum());
-											addIfNotExist(unMovableLines, vr.getLineNum());
+										addIfNotExist(r, vr.getLineNum());
+										addIfNotExist(w, vw.getLineNum());
 									}
 								}
 							}
+						}
 					}
 				}
 			}
 		}
-		//System.out.println(unMovableLines.get(0));
-		//System.out.println(unMovableLines.size());
 	}
 	
 	private void addIfNotExist(ArrayList<Integer> List, int lineNum)
