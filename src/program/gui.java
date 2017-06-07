@@ -1,19 +1,26 @@
 package program;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.Border;
 
 public class gui extends JFrame {
 	private static final String FILENAME = "input.txt";
@@ -21,19 +28,39 @@ public class gui extends JFrame {
 	public static void addComponentsToPane(Container pane) {
 		
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        JPanel buttonGrid = new JPanel();
+        buttonGrid.setLayout(new GridLayout(1,2));
  
         JLabel header = new JLabel("Loop Transformation Helper");
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
+        header.setBackground(Color.BLACK);
+        header.setPreferredSize(new Dimension(50, 50));
+        header.setFont(new Font("Tahoma", Font.BOLD, 18));
+        header.setForeground(Color.WHITE);
         
         JTextArea textbox = new JTextArea("Enter your loop here to be optimized.");
+        Border border = BorderFactory.createMatteBorder(10, 10, 10, 10, Color.BLACK);
+        JScrollPane scrollPaneTop = new JScrollPane(textbox); 
+        scrollPaneTop.setBorder(BorderFactory.createCompoundBorder(border, 
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        scrollPaneTop.setPreferredSize(new Dimension(150, 150));
         
         JTextArea resultbox = new JTextArea("Result.");
-        JScrollPane scrollPane = new JScrollPane(resultbox); 
         resultbox.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(resultbox); 
+        scrollPane.setBorder(BorderFactory.createCompoundBorder(border, 
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        scrollPane.setPreferredSize(new Dimension(150, 150));
         
         JButton submit = new JButton("Submit");
-        submit.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //submit.setBackground(Color.GRAY);
+        submit.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        submit.setBackground(new Color(0, 0, 153));
+        submit.setForeground(Color.WHITE);
+        submit.setFocusPainted(false);
+        submit.setPreferredSize(new Dimension(50, 50));
+        submit.setFont(new Font("Tahoma", Font.BOLD, 18));
+        submit.setBorder(BorderFactory.createCompoundBorder(border, 
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         submit.addActionListener(new ActionListener() { 
       	  public void actionPerformed(ActionEvent e) { 
       	    getUserInput(textbox, resultbox);
@@ -41,28 +68,41 @@ public class gui extends JFrame {
       	} );
         
         JButton clear = new JButton("Clear");
-        clear.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //clear.setBackground(Color.GRAY);
+        clear.setAlignmentX(Component.LEFT_ALIGNMENT);
+        clear.setBackground(new Color(153, 153, 255));
+        clear.setForeground(Color.WHITE);
+        clear.setFocusPainted(false);
+        clear.setPreferredSize(new Dimension(50, 50));
+        clear.setFont(new Font("Tahoma", Font.BOLD, 18));
+        clear.setBorder(BorderFactory.createCompoundBorder(border, 
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         clear.addActionListener(new ActionListener() { 
         	  public void actionPerformed(ActionEvent e) { 
         	    clearTextBoxes(textbox, resultbox);
         	  } 
-        	} );
+        	} );        
+        
+        buttonGrid.add(submit);
+        buttonGrid.add(clear);
         
         pane.add(header);
-        pane.add(textbox);
-        pane.add(submit);
-        pane.add(clear);
-        pane.add(resultbox);
+        //pane.add(textbox);
+        pane.add(scrollPaneTop);
+        //pane.add(submit);
+        //pane.add(clear);
+        pane.add(buttonGrid);
+        //pane.add(resultbox);
+        pane.add(scrollPane);
+        pane.setBackground(Color.BLACK);
         
     }
- 
+	
     private static void GUI() {
         JFrame frame = new JFrame("Loop Transformation Helper");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addComponentsToPane(frame.getContentPane());
         frame.setSize(500, 500);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
