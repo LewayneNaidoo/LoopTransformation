@@ -12,7 +12,7 @@ public class Fission {
 		this.unMovableLines = new ArrayList<Integer>();
 		this.t = t;
 	}
-	
+	// run the fission algorithm
 	public void run()
 	{
 		Dependencies d = new Dependencies(this.t);
@@ -21,8 +21,10 @@ public class Fission {
 		writeLoop();
 	}
 	
+	// write the transformed loop to a string or print error message
 	private void writeLoop()
 	{
+			// write only if there are items in the lists
 			if(!(t.getLast() - t.getFirst() == unMovableLines.size()) && unMovableLines.size() != 0)
 			{
 				output += t.getLine(0) + System.getProperty("line.separator");
@@ -31,6 +33,7 @@ public class Fission {
 					output += t.getLine(t.getFirst() - 1) + System.getProperty("line.separator");
 				}
 				
+				// write all items in the list
 				for(int lineNum: unMovableLines)
 				{
 					
@@ -51,6 +54,7 @@ public class Fission {
 					}
 				}
 			}
+			// out error if can't be fission
 			else
 			{
 				output += "Fission cannot be applied to this loop";

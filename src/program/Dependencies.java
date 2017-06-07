@@ -4,14 +4,15 @@ import java.util.ArrayList;
 public class Dependencies {
 
 	private textExtractor t;
-	private ArrayList<Pair> listR = new ArrayList<Pair>();
-	private ArrayList<Pair> listW = new ArrayList<Pair>();
+	private ArrayList<Pair> listR = new ArrayList<Pair>(); // List of Pair for array variables that are being read
+	private ArrayList<Pair> listW = new ArrayList<Pair>(); // List of Pair for array variables that are being written
 	
 	Dependencies(textExtractor t)
 	{
 		this.t = t;
 	}
 	
+	// count the number of open brackets
 	private int countBrackets(String line)
 	{
 		int count = 0;
@@ -25,27 +26,34 @@ public class Dependencies {
 		return count;
 	}
 	
+	// sorts the lines of input into a list of variables
 	public void sortIntoList()
 	{
 		Variable v;
 		String line;
 		boolean read;
 		int bracketCount;
+		// start at the first operation and loop through the rest of lines
 		for(int i = t.getFirst(); i < t.getSize() - 1; i++)
 		{
 			read = false;
-			line = t.removeSpace(t.getLine(i));
+			line = t.removeSpace(t.getLine(i)); // remove all spaces from line for processing
 			bracketCount = countBrackets(line);
-			char current;
+			char current; // denotes the current character in a line
+			
+			// loop through a line of characters
 			for (int j = 0; j < line.length(); j++)
 			{
+				// run only if line contains bracket
 				if(bracketCount != 0)
 				{
+					// if equal sign is found then the operation change to be read (right hand side)
 					if(line.charAt(j) == '=' && !read)
 					{
 						read = true;
 						j++;
 					}
+					// ignore + and - signs
 					else if(line.charAt(j) == '+' || line.charAt(j) == '-')
 					{
 						j++;
@@ -56,6 +64,7 @@ public class Dependencies {
 					String multS = "";
 					int offset = 0;
 					int mult = 1;
+					// while open backet is not found add all characters to the name string
 					while((current = line.charAt(j)) != '[')
 					{
 						name += current;
@@ -63,6 +72,7 @@ public class Dependencies {
 					}
 					j++;
 					
+					//while first character of the iterator name is not found
 					while((current = line.charAt(j)) != t.getIteratorName(1).charAt(0))
 					{
 						if(current == '*')
@@ -73,7 +83,9 @@ public class Dependencies {
 						multS += current;
 						j++;
 					}
-					j += t.getIteratorName(1).length();
+					j += t.getIteratorName(1).length(); // skip characters by the length of the iterator name
+					
+					// while the end is not reached and a close bracket is not found
 					while(j < line.length() && (current = line.charAt(j)) != ']')
 					{
 						offsetS += current;
@@ -87,7 +99,9 @@ public class Dependencies {
 					{
 						mult = Integer.parseInt(multS);
 					}
-					v = new Variable(mult, offset, i);
+					v = new Variable(mult, offset, i); // create a new Variable with the attributes assigned to it
+					
+					// if a read operation then save to a read list otherwise save to write list
 					if(read)
 					{
 						addToVr(name, v);
@@ -104,9 +118,12 @@ public class Dependencies {
 		}
 	}
 	
+	// dependency analysis to determine constraints for transformation
 	public void dependencyAnalysis(ArrayList<Integer> unMovableLines)
 	{
 		Gcd g = new Gcd();
+		
+		// iterate through write and read lists and compare only the same array i.e. X[a*i + b] with X[c*i + d]  
 		for (Pair p: listR)
 		{
 			for(Pair p2: listW)
@@ -117,12 +134,14 @@ public class Dependencies {
 					{
 						for(Variable vr: p.getSecond())
 						{
+							// if GCDTest return true for inter-dependency then add the line to a list of constraints (can't be move)
 							if(g.gcdTest(vw.getMult(), vw.getOffSet(), vr.getMult(), vr.getOffSet()))
 							{
 								addIfNotExist(unMovableLines, vw.getLineNum());
 							}
 							else
 							{
+								// if the writing line is above the reading line then add to list of constraints
 								if(vw.getLineNum() < vr.getLineNum())
 								{
 									addIfNotExist(unMovableLines, vw.getLineNum());
@@ -135,6 +154,7 @@ public class Dependencies {
 		}
 	}
 	
+	// Add an item to a list if it doesn't already exist in the list
 	private void addIfNotExist(ArrayList<Integer> List, int lineNum)
 	{
 		if(!List.contains(lineNum))
@@ -143,6 +163,7 @@ public class Dependencies {
 		}
 	}
 	
+	// add Variable to the read list
 	private void addToVr(String name, Variable v)
 	{
 		for (Pair p: listR)
@@ -158,6 +179,7 @@ public class Dependencies {
 		listR.add(p1);
 	}
 	
+	// add Variable to the write list
 	private void addToVw(String name, Variable v)
 	{
 		for (Pair p: listW)
