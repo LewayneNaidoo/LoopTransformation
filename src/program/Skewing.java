@@ -80,7 +80,7 @@ public class Skewing {
 		temp1 = line[looptwo];
 		temp1 = temp1.trim();
 		temp1 = temp1.replaceFirst("i", io);
-		temp1 = temp1.replaceFirst("i", m);
+		temp1 = temp1.replaceFirst("i", n);
 		
 		temp2 = line[loopone];
 		temp2 = "\t" + temp2;
