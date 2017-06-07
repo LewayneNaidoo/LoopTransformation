@@ -33,22 +33,22 @@ public class Skewing {
 			// making relevant adjustments to the variable in order to perform the skewing algorithm
 			if (count == 1){
 				if (loop.charAt(i) == '='){
-					loop = loop.substring(0,i)+"=" + variableOne+ "+"+loop.substring(i+1);
+					loop = loop.substring(0,i)+"=" + "i"+ "+"+loop.substring(i+1);
 					// correction of i with new elements added to string
 					i += 2;
 					
 				} else if (loop.charAt(i) == '>'){
-					loop = loop.substring(0,i)+">" + variableOne+ "+"+loop.substring(i+1);
+					loop = loop.substring(0,i)+">" + "i"+ "+"+loop.substring(i+1);
 					i += 2;
 				} else if (loop.charAt(i) == '<'){
-					loop = loop.substring(0,i)+"<" + variableOne+ "+"+loop.substring(i+1);
+					loop = loop.substring(0,i)+"<" + "i"+ "+"+loop.substring(i+1);
 					i += 2;
 				}
 			}
 			
 			if (count == 2){
 				if (loop.charAt(i) == ']'){
-					loop = loop.substring(0,i)+"-" + variableOne+ "]"+loop.substring(i+1);
+					loop = loop.substring(0,i)+"-" + "i"+ "]"+loop.substring(i+1);
 					i += 2;
 				}
 			}
@@ -72,8 +72,8 @@ public class Skewing {
 		String temp2;
 		String n = "", m = "", io = "";
 		
-		String variableOne = t.getIteratorName(1);
-		String variableTwo = t.getIteratorName(2);
+		//String variableOne = t.getIteratorName(1);
+		//String variableTwo = t.getIteratorName(2);
 		
 		for (int i = 0; i < line.length; i++) {
 
@@ -94,14 +94,14 @@ public class Skewing {
 		
 		temp1 = line[looptwo];
 		temp1 = temp1.trim();
-		temp1 = temp1.replaceFirst(variableOne, io);
-		temp1 = temp1.replaceFirst(variableOne, n);
+		temp1 = temp1.replaceFirst("i", io);
+		temp1 = temp1.replaceFirst("i", n);
 		
 		temp2 = line[loopone];
 		temp2 = "\t" + temp2;
 		temp2 = temp2.replace("=", "= max(");
-		temp2 = temp2.replaceFirst(";", ", " + variableTwo +" - " + m + ");");
-		temp2 = temp2.replace(temp2.substring(temp2.indexOf("<")+2, temp2.lastIndexOf(";")+1), "min(" + n + ", " + variableTwo +" -" + io + ");");
+		temp2 = temp2.replaceFirst(";", ", " + "j" +" - " + m + ");");
+		temp2 = temp2.replace(temp2.substring(temp2.indexOf("<")+2, temp2.lastIndexOf(";")+1), "min(" + n + ", " + "j" +" -" + io + ");");
 		
 		line[loopone] = temp1;
 		line[looptwo] = temp2;
