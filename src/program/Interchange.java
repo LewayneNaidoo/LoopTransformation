@@ -84,7 +84,7 @@ public class Interchange {
 							
 							System.out.println("Dependence: " + idep + ", " +jdep);
 						
-							if (idep < 0 || jdep < 0) {
+							if (idep < 0 || jdep != 0) {
 								return false;
 	
 							}					
