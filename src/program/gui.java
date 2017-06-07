@@ -30,19 +30,22 @@ public class gui extends JFrame {
 	private static String summaryString = "Summary unavaliable: no loop transformation has been run";
 	public static void addComponentsToPane(Container pane) {
 		
+		// pane is the layout of the whole GUI frame
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        
+        // panel for button layout (submit and clear)
         JPanel buttonGrid = new JPanel();
-        JPanel headerGrid = new JPanel();
         buttonGrid.setLayout(new GridLayout(1,2));
+        
+        // panel for header (help and summary options)
+        JPanel headerGrid = new JPanel();
         headerGrid.setLayout(new GridLayout(1,4));
  
+        // created custom borders for buttons and rest of elements
         Border border = BorderFactory.createMatteBorder(10, 10, 10, 10, (new Color(51,0,0)));
         Border borderButton = BorderFactory.createMatteBorder(10, 10, 10, 10, (new Color(0, 0, 0)));
-
-        //final JPopupMenu menu = new JPopupMenu("Choose your configuration:");
-        //menu.add("Manual");
-        //menu.add("Smart");
         
+        // summary button with message action listener and custom settings
         JButton summary = new JButton("Summary");
         summary.setAlignmentX(Component.RIGHT_ALIGNMENT);
         summary.setBackground(new Color(102, 0, 0));
@@ -57,7 +60,7 @@ public class gui extends JFrame {
         		  JOptionPane.showMessageDialog(null, summaryString, "Summary of transformation:", JOptionPane.PLAIN_MESSAGE);   		  
         	  } 
         	} );
-        
+         
         JButton blank = new JButton("");
         blank.setAlignmentX(Component.RIGHT_ALIGNMENT);
         blank.setBackground(new Color(0, 0, 0));
@@ -65,7 +68,7 @@ public class gui extends JFrame {
         blank.setFocusPainted(false);
         blank.setPreferredSize(new Dimension(20, 20));
         blank.setFont(new Font("Arial", Font.BOLD, 9));
-        //blank.setToolTipText("Manchester");
+        //blank.setToolTipText("tool top message");
         blank.setBorder(BorderFactory.createCompoundBorder(borderButton, 
                     BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         blank.addActionListener(new ActionListener() { 
@@ -74,6 +77,7 @@ public class gui extends JFrame {
       	  } 
       	} );
         
+        // help button with information message action listener and custom settings, info message contains rules for application
         JButton help = new JButton("Help");
         help.setAlignmentX(Component.RIGHT_ALIGNMENT);
         help.setBackground(new Color(102, 0, 0));
@@ -93,6 +97,7 @@ public class gui extends JFrame {
         	} );
         
         
+        // text box created for user input and result text box for the results, both scrollable and fixed size
         JTextArea textbox = new JTextArea("Enter your loop here to be optimized.");
         JScrollPane scrollPaneTop = new JScrollPane(textbox); 
         scrollPaneTop.setBorder(BorderFactory.createCompoundBorder(border, 
@@ -106,6 +111,7 @@ public class gui extends JFrame {
                     BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         scrollPane.setPreferredSize(new Dimension(150, 150));
         
+        // submit button which is used to get the user input and run the appropriate algorithms
         JButton submit = new JButton("Submit");
         submit.setAlignmentX(Component.RIGHT_ALIGNMENT);
         submit.setBackground(new Color(102, 0, 0));
@@ -121,6 +127,7 @@ public class gui extends JFrame {
       	  } 
       	} );
         
+        // clear button to clear both text boxes
         JButton clear = new JButton("Clear");
         clear.setAlignmentX(Component.LEFT_ALIGNMENT);
         clear.setBackground(new Color(204, 102, 102));
@@ -136,6 +143,8 @@ public class gui extends JFrame {
         	  } 
         	} );        
         
+        
+        // adding all buttons/panels to the pane
         buttonGrid.add(submit);
         buttonGrid.add(clear);
         
@@ -143,20 +152,15 @@ public class gui extends JFrame {
         headerGrid.add(blank);
         headerGrid.add(help);
         
-        //pane.add(header);
         pane.add(headerGrid);
-        //pane.add(textbox);
         pane.add(scrollPaneTop);
-        //pane.add(submit);
-        //pane.add(clear);
         pane.add(buttonGrid);
-        //pane.add(resultbox);
         pane.add(scrollPane);
-        //pane.setBackground((new Color(75, 87, 170)));
+        
         pane.setBackground((new Color(0, 0, 0)));
         
     }
-	
+	// creates the frame for which the application appears on
     private static void GUI() {
         JFrame frame = new JFrame("Loop Transformation Tool");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -167,11 +171,13 @@ public class gui extends JFrame {
         frame.setVisible(true);
     }
  
+    // clear text boxes method
     public static void clearTextBoxes(JTextArea a, JTextArea b){
     	a.setText("");
     	b.setText("");
     }
     
+    // method which gets the user input and saves it to a file then applies transform
     public static void getUserInput(JTextArea a, JTextArea b){
     	BufferedWriter bw = null;
 		FileWriter fw = null;
@@ -205,6 +211,7 @@ public class gui extends JFrame {
     	b.setText(transform());
     }
     
+    // applies transform and outputs all relevant information (also checks legality of string for each transform)
     public static String transform()
     {
     	String output = "";
