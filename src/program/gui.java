@@ -35,11 +35,12 @@ public class gui extends JFrame {
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
         header.setBackground(Color.BLACK);
         header.setPreferredSize(new Dimension(50, 50));
-        header.setFont(new Font("Tahoma", Font.BOLD, 18));
+        header.setFont(new Font("Arial", Font.BOLD, 18));
         header.setForeground(Color.WHITE);
         
         JTextArea textbox = new JTextArea("Enter your loop here to be optimized.");
-        Border border = BorderFactory.createMatteBorder(10, 10, 10, 10, Color.BLACK);
+        Border border = BorderFactory.createMatteBorder(10, 10, 10, 10, (new Color(51,0,0)));
+        Border borderButton = BorderFactory.createMatteBorder(10, 10, 10, 10, (new Color(0, 0, 0)));
         JScrollPane scrollPaneTop = new JScrollPane(textbox); 
         scrollPaneTop.setBorder(BorderFactory.createCompoundBorder(border, 
                     BorderFactory.createEmptyBorder(10, 10, 10, 10)));
@@ -54,12 +55,12 @@ public class gui extends JFrame {
         
         JButton submit = new JButton("Submit");
         submit.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        submit.setBackground(new Color(0, 0, 153));
+        submit.setBackground(new Color(102, 0, 0));
         submit.setForeground(Color.WHITE);
         submit.setFocusPainted(false);
         submit.setPreferredSize(new Dimension(50, 50));
-        submit.setFont(new Font("Tahoma", Font.BOLD, 18));
-        submit.setBorder(BorderFactory.createCompoundBorder(border, 
+        submit.setFont(new Font("Arial", Font.BOLD, 18));
+        submit.setBorder(BorderFactory.createCompoundBorder(borderButton, 
                     BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         submit.addActionListener(new ActionListener() { 
       	  public void actionPerformed(ActionEvent e) { 
@@ -69,12 +70,12 @@ public class gui extends JFrame {
         
         JButton clear = new JButton("Clear");
         clear.setAlignmentX(Component.LEFT_ALIGNMENT);
-        clear.setBackground(new Color(153, 153, 255));
+        clear.setBackground(new Color(204, 102, 102));
         clear.setForeground(Color.WHITE);
         clear.setFocusPainted(false);
         clear.setPreferredSize(new Dimension(50, 50));
-        clear.setFont(new Font("Tahoma", Font.BOLD, 18));
-        clear.setBorder(BorderFactory.createCompoundBorder(border, 
+        clear.setFont(new Font("Arial", Font.BOLD, 18));
+        clear.setBorder(BorderFactory.createCompoundBorder(borderButton, 
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         clear.addActionListener(new ActionListener() { 
         	  public void actionPerformed(ActionEvent e) { 
@@ -93,7 +94,8 @@ public class gui extends JFrame {
         pane.add(buttonGrid);
         //pane.add(resultbox);
         pane.add(scrollPane);
-        pane.setBackground(Color.BLACK);
+        //pane.setBackground((new Color(75, 87, 170)));
+        pane.setBackground((new Color(0, 0, 0)));
         
     }
 	
