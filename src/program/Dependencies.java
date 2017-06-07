@@ -91,12 +91,12 @@ public class Dependencies {
 					if(read)
 					{
 						addToVr(name, v);
-						System.out.println("READ name: " + name + " mult:" + mult + " offset: " + offset + " line: " + i);
+						//System.out.println("READ name: " + name + " mult:" + mult + " offset: " + offset + " line: " + i);
 					}
 					else
 					{
 						addToVw(name, v);
-						System.out.println("WRITE name: " + name + " mult:" + mult + " offset: " + offset + " line: " + i);
+						//System.out.println("WRITE name: " + name + " mult:" + mult + " offset: " + offset + " line: " + i);
 					}
 					bracketCount--;
 				}
@@ -107,8 +107,6 @@ public class Dependencies {
 	public void dependencyAnalysis(ArrayList<Integer> unMovableLines)
 	{
 		Gcd g = new Gcd();
-		ArrayList<Integer> w = new ArrayList<Integer>();
-		ArrayList<Integer> r = new ArrayList<Integer>();
 		for (Pair p: listR)
 		{
 			for(Pair p2: listW)
@@ -127,15 +125,7 @@ public class Dependencies {
 							{
 								if(vw.getLineNum() < vr.getLineNum())
 								{
-									if(r.contains(vw.getLineNum()))
-									{
-										addIfNotExist(unMovableLines, vw.getLineNum());
-									}
-									else
-									{
-										addIfNotExist(r, vr.getLineNum());
-										addIfNotExist(w, vw.getLineNum());
-									}
+									addIfNotExist(unMovableLines, vw.getLineNum());
 								}
 							}
 						}

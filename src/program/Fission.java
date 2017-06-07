@@ -23,7 +23,7 @@ public class Fission {
 	
 	private void writeLoop()
 	{
-			if(!(t.getLast() - t.getFirst() == unMovableLines.size()))
+			if(!(t.getLast() - t.getFirst() == unMovableLines.size()) && unMovableLines.size() != 0)
 			{
 				output += t.getLine(0) + System.getProperty("line.separator");
 				if(!t.getLine(0).contains("{"))
@@ -41,19 +41,19 @@ public class Fission {
 					output += '}' + System.getProperty("line.separator");
 				}
 				
-				output +=(System.getProperty("line.separator"));
+				output += System.getProperty("line.separator");
 				
 				for(int i = 0; i < t.getSize(); i++)
 				{
 					if(!unMovableLines.contains(i))
 					{
-						output += (t.getLine(i) + System.getProperty("line.separator"));
+						output += t.getLine(i) + System.getProperty("line.separator");
 					}
 				}
 			}
 			else
 			{
-				output += ("Fission cannot be applied to this loop");
+				output += "Fission cannot be applied to this loop";
 			}
 	}
 	

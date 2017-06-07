@@ -27,10 +27,9 @@ import javax.swing.border.Border;
 
 public class gui extends JFrame {
 	private static final String FILENAME = "input.txt";
-
+	private static String summaryString = "Summary unavaliable: no loop transformation has been run";
 	public static void addComponentsToPane(Container pane) {
 		
-		String summaryString = "Summary will go here :)";
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
         JPanel buttonGrid = new JPanel();
         JPanel headerGrid = new JPanel();
@@ -43,34 +42,6 @@ public class gui extends JFrame {
         //final JPopupMenu menu = new JPopupMenu("Choose your configuration:");
         //menu.add("Manual");
         //menu.add("Smart");
-        
-        JComboBox<String> options = new JComboBox<String>();
-        options.addItem("Smart");
-        options.addItem("Fission");
-        options.addItem("Interchange");
-        options.addItem("Skewing");
-        options.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        options.setBackground(new Color(102, 0, 0));
-        options.setForeground(Color.WHITE);
-        //options.setFocusPainted(false);
-        options.setPreferredSize(new Dimension(35, 35));
-        options.setFont(new Font("Arial", Font.BOLD, 9));
-        options.setBorder(BorderFactory.createCompoundBorder(borderButton, 
-                    BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        options.addActionListener(new ActionListener() { 
-      	  public void actionPerformed(ActionEvent e) { 
-      		//menu.show(options, options.getWidth()/2, options.getHeight()/2);
-      		  if ("Fission" == options.getSelectedItem()){
-      			options.setBackground(new Color(0, 102, 0));
-      		  } else if ("Interchange" == options.getSelectedItem()){
-      			options.setBackground(new Color(0, 50, 0));
-      		  } else if ("Skewing" == options.getSelectedItem()){
-      			options.setBackground(new Color(150, 0, 0));
-      		  } else {
-      			options.setBackground(new Color(50, 0, 0));
-      		  }
-      	  } 
-      	} );
         
         JButton summary = new JButton("Summary");
         summary.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -114,15 +85,10 @@ public class gui extends JFrame {
                     BorderFactory.createEmptyBorder(10, 10, 10, 10)));
         help.addActionListener(new ActionListener() { 
         	  public void actionPerformed(ActionEvent e) { 
-        		  JOptionPane.showMessageDialog(null, "Options tab allows you to either choose a specific transformation or let the application choose for you (with the smart option). \n"
-        		  		+ "Summary tab will give you a summary of what transformation your input loop went through and how it has been optimised. \n"
-        		  		+ "Reset tab will restart this application. \n"
+        		  JOptionPane.showMessageDialog(null, "Summary tab will give you a summary of what transformation your input loop went through and how it has been optimised. \n"
         		  		+ "In the text box, input a valid string to be transformed. Valid strings must: \n "
         		  		+ "		- not have any errors \n"
-        		  		+ "		- be either a for or nested for loop \n"
-        		  		+ "		- x \n"
-        		  		+ "		- y \n"
-        		  		+ "		- z \n", "Help", JOptionPane.INFORMATION_MESSAGE);
+        		  		+ "		- be either a single for or single nested for loop \n", "Help", JOptionPane.INFORMATION_MESSAGE);
         	  } 
         	} );
         
@@ -173,7 +139,6 @@ public class gui extends JFrame {
         buttonGrid.add(submit);
         buttonGrid.add(clear);
         
-        headerGrid.add(options);
         headerGrid.add(summary);
         headerGrid.add(blank);
         headerGrid.add(help);
@@ -211,12 +176,12 @@ public class gui extends JFrame {
     	BufferedWriter bw = null;
 		FileWriter fw = null;
     	String inputLoop = a.getText();
-    	System.out.println(inputLoop);
+    	//System.out.println(inputLoop);
 		try {
 			fw = new FileWriter(FILENAME);
 			bw = new BufferedWriter(fw);
 			bw.write(inputLoop);
-			System.out.println("done");
+			//System.out.println("done");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -253,18 +218,25 @@ public class gui extends JFrame {
 				System.out.println("Legal for interchange");
 				in.run();
 				output = t.getLines();
+				summaryString = "Interchange algorithm is ran on the input" + System.getProperty("line.separator") + output;
 			} else {
 				System.out.println("Illegal for interchange");
 				Skewing sk = new Skewing(t);
 				sk.run();
 				output = sk.getOutput();
+				summaryString = "Skewing and interchange algorithm are ran on the input" + System.getProperty("line.separator") + output;
 			}
 		}
-		else
+		else if(t.getNumFor() == 1)
 		{
 			Fission f = new Fission(t);
 			f.run();	
 			output = f.getOutput();
+			summaryString = "Fission algorithm is ran on the input" + System.getProperty("line.separator") + output;
+		}
+		else
+		{
+			output = "Invalid input.";
 		}
 		return output;
     }
