@@ -35,21 +35,21 @@ public class Skewing {
 				if (loop.charAt(i) == '='){
 					loop = loop.substring(0,i)+"=" + variableOne+ "+"+loop.substring(i+1);
 					// correction of i with new elements added to string
-					i += 2;
+					i += 1 + variableOne.length();
 					
 				} else if (loop.charAt(i) == '>'){
 					loop = loop.substring(0,i)+">" + variableOne+ "+"+loop.substring(i+1);
-					i += 2;
+					i += 1 + variableOne.length();
 				} else if (loop.charAt(i) == '<'){
 					loop = loop.substring(0,i)+"<" + variableOne+ "+"+loop.substring(i+1);
-					i += 2;
+					i += 1 + variableOne.length();
 				}
 			}
 			
 			if (count == 2){
 				if (loop.charAt(i) == ']'){
 					loop = loop.substring(0,i)+"-" + variableOne+ "]"+loop.substring(i+1);
-					i += 2;
+					i += 1 + variableOne.length();
 				}
 			}
 		}
